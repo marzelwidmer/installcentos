@@ -164,7 +164,7 @@ export CERTBOT="True"
 if [ $CERTBOT ]; then
 	echo >> inventory.ini
 	echo "openshift_master_overwrite_named_certificates=$OVERWRITE_NAMED_CERTIFICATES_VALUE" >> inventory.ini	
-	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/"$DOAMIN"/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/"$DOAMIN"/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
+	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/"${DOMAIN}"/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/"${DOMAIN}"/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
 fi
 
 mkdir -p /etc/origin/master/
