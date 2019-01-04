@@ -12,9 +12,8 @@ export VERSION=${VERSION:="3.11"}
 export SCRIPT_REPO=${SCRIPT_REPO:="https://raw.githubusercontent.com/marzelwidmer/installcentos/master"}
 export IP=${IP:="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"}
 export API_PORT=${API_PORT:="8443"}
-export ANSIBLE_VERSION ="ansible-2.7.5-1.el7"
+export ANSIBLE_VERSION="ansible-2.7.5-1.el7"
 export CERTBOT=true
-
 
 ## Make the script interactive to set the variables
 if [ "$INTERACTIVE" = "true" ]; then
