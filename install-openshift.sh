@@ -161,9 +161,10 @@ fi
 # TODO certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory  -d *.keepcalm.ch -d *.apps.keepcalm.ch
 # add certifcate in inventori.ini if certbot variable is set
 export CERTBOT="True"
+
 if [ $CERTBOT ]; then
 	echo >> inventory.ini
-	echo "openshift_master_overwrite_named_certificates="$OVERWRITE_NAMED_CERTIFICATES_VALUE" >> inventory.ini
+	echo "openshift_master_overwrite_named_certificates=\"$OVERWRITE_NAMED_CERTIFICATES_VALUE\" >> inventory.ini
 	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/keepcalm.ch/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/keepcalm.ch/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
 fi
 
