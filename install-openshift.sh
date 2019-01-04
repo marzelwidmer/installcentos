@@ -9,9 +9,12 @@ export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
 export USERNAME=${USERNAME:="$(whoami)"}
 export PASSWORD=${PASSWORD:=password}
 export VERSION=${VERSION:="3.11"}
-export SCRIPT_REPO=${SCRIPT_REPO:="https://raw.githubusercontent.com/gshipley/installcentos/master"}
+export SCRIPT_REPO=${SCRIPT_REPO:="https://raw.githubusercontent.com/marzelwidmer/installcentos/master"}
 export IP=${IP:="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"}
 export API_PORT=${API_PORT:="8443"}
+export ANSIBLE_VERSION ="ansible-2.7.5-1.el7"
+export CERTBOT=true
+
 
 ## Make the script interactive to set the variables
 if [ "$INTERACTIVE" = "true" ]; then
@@ -71,8 +74,11 @@ yum install -y  wget git zile nano net-tools docker-1.13.1\
 #install epel
 yum -y install epel-release
 
+#install addtional system tools
+yum -y install certbot htop httpie lsof
+
 # Disable the EPEL repository globally so that is not accidentally used during later steps of the installation
-sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
+#sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
 systemctl | grep "NetworkManager.*running" 
 if [ $? -eq 1 ]; then
@@ -83,7 +89,7 @@ fi
 # install the packages for Ansible
 yum -y --enablerepo=epel install pyOpenSSL
 
-curl -o ansible.rpm https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.5-1.el7.ans.noarch.rpm
+curl -o ansible.rpm https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/${ANSIBLE_VERSION}.ans.noarch.rpm
 yum -y --enablerepo=epel install ansible.rpm
 
 [ ! -d openshift-ansible ] && git clone https://github.com/openshift/openshift-ansible.git
@@ -135,8 +141,9 @@ if [ "$memory" -lt "16777216" ]; then
 	export LOGGING="False"
 fi
 
-curl -o inventory.download $SCRIPT_REPO/inventory.ini
-envsubst < inventory.download > inventory.ini
+# Download inventory.ini from remote repo
+#curl -o inventory.download $SCRIPT_REPO/inventory.ini
+#envsubst < inventory.download > inventory.ini
 
 # add proxy in inventory.ini if proxy variables are set
 if [ ! -z "${HTTPS_PROXY:-${https_proxy:-${HTTP_PROXY:-${http_proxy}}}}" ]; then
@@ -149,6 +156,14 @@ if [ ! -z "${HTTPS_PROXY:-${https_proxy:-${HTTP_PROXY:-${http_proxy}}}}" ]; then
 		__no_proxy="${IP},.${DOMAIN}"
 	fi
 	echo "openshift_no_proxy=\"${__no_proxy}\"" >> inventory.ini
+fi
+
+# TODO certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory  -d *.keepcalm.ch -d *.apps.keepcalm.ch
+# add certifcate in inventori.ini if certbot variable is set
+if [ $CERTBOT ]; then
+	echo >> inventory.ini
+	echo "openshift_master_overwrite_named_certificates=true" >> inventory.ini
+	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/keepcalm.ch/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/keepcalm.ch/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
 fi
 
 mkdir -p /etc/origin/master/
