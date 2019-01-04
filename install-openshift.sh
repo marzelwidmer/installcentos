@@ -14,7 +14,7 @@ export IP=${IP:="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"}
 export API_PORT=${API_PORT:="8443"}
 # ansible-2.7.5-1.el7"
 export ANSIBLE_VERSION="ansible-2.6.5-1.el7" 
-export OVERWRITE_NAMED_CERTIFICATES_VALUE=false
+export OVERWRITE_NAMED_CERTIFICATES_VALUE="false"
 
 ## Make the script interactive to set the variables
 if [ "$INTERACTIVE" = "true" ]; then
@@ -164,7 +164,7 @@ export CERTBOT="True"
 
 if [ $CERTBOT ]; then
 	echo >> inventory.ini
-	echo "openshift_master_overwrite_named_certificates=\"$OVERWRITE_NAMED_CERTIFICATES_VALUE\" >> inventory.ini
+	echo "openshift_master_overwrite_named_certificates=$OVERWRITE_NAMED_CERTIFICATES_VALUE" >> inventory.ini	
 	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/keepcalm.ch/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/keepcalm.ch/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
 fi
 
