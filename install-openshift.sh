@@ -12,8 +12,9 @@ export VERSION=${VERSION:="3.11"}
 export SCRIPT_REPO=${SCRIPT_REPO:="https://raw.githubusercontent.com/marzelwidmer/installcentos/master"}
 export IP=${IP:="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"}
 export API_PORT=${API_PORT:="8443"}
-export ANSIBLE_VERSION="ansible-2.7.5-1.el7"
-export CERTBOT=true
+# ansible-2.7.5-1.el7"
+export ANSIBLE_VERSION="ansible-2.6.5-1.el7" 
+export OVERWRITE_NAMED_CERTIFICATES_VALUE=false
 
 ## Make the script interactive to set the variables
 if [ "$INTERACTIVE" = "true" ]; then
@@ -159,9 +160,10 @@ fi
 
 # TODO certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory  -d *.keepcalm.ch -d *.apps.keepcalm.ch
 # add certifcate in inventori.ini if certbot variable is set
+export CERTBOT="True"
 if [ $CERTBOT ]; then
 	echo >> inventory.ini
-	echo "openshift_master_overwrite_named_certificates=true" >> inventory.ini
+	echo "openshift_master_overwrite_named_certificates="$OVERWRITE_NAMED_CERTIFICATES_VALUE" >> inventory.ini
 	echo "openshift_master_named_certificates=[{\"certfile\": \"/etc/letsencrypt/live/keepcalm.ch/fullchain.pem\", \"keyfile\": \"/etc/letsencrypt/live/keepcalm.ch/privkey.pem\", \"names\": [\"*.keepcalm.ch\", \"*.apps.keepcalm.ch\"] }]" >> inventory.ini
 fi
 
