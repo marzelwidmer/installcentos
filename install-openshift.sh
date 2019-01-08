@@ -158,8 +158,9 @@ if [ ! -z "${HTTPS_PROXY:-${https_proxy:-${HTTP_PROXY:-${http_proxy}}}}" ]; then
 	echo "openshift_no_proxy=\"${__no_proxy}\"" >> inventory.ini
 fi
 
-# TODO certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory  -d *.$DOMAIN -d *.apps.$DOMAIN
-# add certifcate in inventori.ini if certbot variable is set
+# TODO certbot --manual certonly --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory  -d *.$DOMAIN -d *.apps.$DOMAIN  -d $DOMAIN
+# certbot --manual certonly --expand -d $DOMAIN,*.apps.$DOMAIN,*.$DOMAIN
+# add certifcate in inventori.ini if certbot variable is set 
 export CERTBOT="True"
 
 if [ $CERTBOT ]; then
