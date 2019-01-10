@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DOMAIN="keepcalm.ch" 
+export DOMAIN="" 
 export USERNAME="" 
 export PASSWORD="" 
 export SCRIPT_REPO=""
