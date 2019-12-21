@@ -104,12 +104,16 @@ if you have already one and want it just rest and re-install the cluster you can
 hcloud server rebuild c3smonkey.ch --image centos-7
 ```
 
-Login to server and clone repo.
+Login to server update installation and install git
+```bash
+yum update
+yum install git  
+```
+Clone Git repository
 ```bash
 git clone https://github.com/marzelwidmer/installcentos.git
 ```
-
-Update Script with your stuff
+Change in installationcentos directory and update `user-custom-export.sh` Script with your stuff
 ```bash
 vi user-custom-exports.sh
 ```
@@ -123,23 +127,33 @@ Start installaion
 ./install-openshift.sh
 ```
 
-
-Check networkpolicy
-```bash
-cat /etc/origin/master/master-config.yaml
-```
-
-
-# Gandi
-## DNS Records
+DNS Records
 ```
 @ 10800 IN SOA ns1.gandi.net. hostmaster.gandi.net. 1576072417 10800 3600 604800 10800
 * 420 IN CNAME apps.console
 @ 1800 IN A 116.203.227.123
 @ 1800 IN TXT "v=spf1 include:_mailcust.gandi.net ?all"
-_acme-challenge 1800 IN TXT "valueFromFnstallScript"
-_acme-challenge 1800 IN TXT "valueFromFnstallScript"
-_acme-challenge.apps 1800 IN TXT "valueFromFnstallScript"
+_acme-challenge 1800 IN TXT "valueFromInstallScript"
+_acme-challenge 1800 IN TXT "valueFromInstallScript"
+_acme-challenge.apps 1800 IN TXT "valueFromInstallScript"
 apps.console 300 IN A 116.203.227.123
 console 300 IN A 116.203.227.123
 ```
+
+check `DNS`
+```bash
+$ host -t txt _acme-challenge.apps.c3smonkey.ch
+_acme-challenge.apps.c3smonkey.ch descriptive text "valueFromInstallScript-U"
+
+$ host -t txt _acme-challenge.c3smonkey.ch
+_acme-challenge.c3smonkey.ch descriptive text "valueFromInstallScript"
+_acme-challenge.c3smonkey.ch descriptive text "valueFromInstallScript"
+```
+
+
+Check `networkpolicy`
+```bash
+cat /etc/origin/master/master-config.yaml
+```
+
+
