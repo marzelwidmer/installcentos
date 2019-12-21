@@ -90,6 +90,46 @@ To destroy the infrastructure, run the `stop.sh` script.
 
 
 
+
+
+# hetzner-okd-ansible
+Create a hetzner VM with the CLI https://github.com/hetznercloud/cli
+
+```
+hcloud server create --name <YOUR_DOMAIN> --type cx41 --image centos-7 --ssh-key <YOUR_HETZNER_SSH_KEY> --datacenter hel1-dc2
+```
+
+if you have already one and want it just rest and re-install the cluster you can user the following command.
+```
+hcloud server rebuild c3smonkey.ch --image centos-7
+```
+
+Login to server and clone repo.
+```bash
+git clone https://github.com/marzelwidmer/installcentos.git
+```
+
+Update Script with your stuff
+```bash
+vi user-custom-exports.sh
+```
+
+Load Variables
+```bash
+. user-custom-exports.sh
+```
+Start installaion
+```bash
+./install-openshift.sh
+```
+
+
+Check networkpolicy
+```bash
+cat /etc/origin/master/master-config.yaml
+```
+
+
 # Gandi
 ## DNS Records
 ```
