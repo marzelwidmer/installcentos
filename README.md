@@ -86,3 +86,20 @@ and then run `start.sh` to start the provisioning. Once the ssh is connected to 
 script will atatch to the `tmux` session running Ansible installer.
 
 To destroy the infrastructure, run the `stop.sh` script.
+
+
+
+
+# Gandi
+## DNS Records
+```
+@ 10800 IN SOA ns1.gandi.net. hostmaster.gandi.net. 1576072417 10800 3600 604800 10800
+* 420 IN CNAME apps.console
+@ 1800 IN A 116.203.227.123
+@ 1800 IN TXT "v=spf1 include:_mailcust.gandi.net ?all"
+_acme-challenge 1800 IN TXT "valueFromFnstallScript"
+_acme-challenge 1800 IN TXT "valueFromFnstallScript"
+_acme-challenge.apps 1800 IN TXT "valueFromFnstallScript"
+apps.console 300 IN A 116.203.227.123
+console 300 IN A 116.203.227.123
+```
