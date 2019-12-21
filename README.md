@@ -151,9 +151,18 @@ _acme-challenge.c3smonkey.ch descriptive text "valueFromInstallScript"
 ```
 
 
-Check `networkpolicy`
+Check for `networkPluginName: redhat/openshift-ovs-networkpolicy`
 ```bash
 cat /etc/origin/master/master-config.yaml
+
+networkConfig:
+  clusterNetworks:
+  - cidr: 10.128.0.0/14
+    hostSubnetLength: 9
+  externalIPNetworkCIDRs:
+  - 0.0.0.0/0
+  networkPluginName: redhat/openshift-ovs-networkpolicy
+  serviceNetworkCIDR: 172.30.0.0/16
 ```
 
 
