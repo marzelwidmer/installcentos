@@ -122,7 +122,7 @@ Load Variables
 ```bash
 . user-custom-exports.sh
 ```
-Start installaion
+Start installation
 ```bash
 ./install-openshift.sh
 ```
@@ -151,7 +151,19 @@ _acme-challenge.c3smonkey.ch descriptive text "valueFromInstallScript"
 ```
 
 
-Check for `networkPluginName: redhat/openshift-ovs-networkpolicy`
+Change `networkPluginName: redhat/openshift-ovs-networkpolicy`
+Change value in `invenetory.ini`
+```bash
+os_sdn_network_plugin_name='redhat/openshift-ovs-networkpolicy'
+```
+
+reinstall cluster
+```bash
+ansible-playbook -i inventory.ini openshift-ansible/playbooks/prerequisites.yml
+ansible-playbook -i inventory.ini openshift-ansible/playbooks/deploy_cluster.yml
+```
+
+Check if the changes are made in `master-config.yaml` file.
 ```bash
 cat /etc/origin/master/master-config.yaml
 
