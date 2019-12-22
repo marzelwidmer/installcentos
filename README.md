@@ -106,8 +106,8 @@ hcloud server rebuild c3smonkey.ch --image centos-7
 
 Login to server update installation and install git
 ```bash
-yum update
-yum install git  
+yum -y update 
+yum -y install git  
 ```
 Clone Git repository
 ```bash
