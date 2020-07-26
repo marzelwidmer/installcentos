@@ -1,9 +1,9 @@
 #!/bin/bash
 
-export DOMAIN="" 
-export USERNAME="" 
-export PASSWORD="" 
-export EMAIL=""
+export DOMAIN="c3smonkey.ch"
+export USERNAME="monkey"
+export PASSWORD="monkeyPassword"
+export EMAIL="marzelwidmer@gmail.com"
 export SCRIPT_REPO=""
 export IP="" 
 export DISK="" 
